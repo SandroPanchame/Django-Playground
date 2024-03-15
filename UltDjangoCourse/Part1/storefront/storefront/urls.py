@@ -21,5 +21,8 @@ from django.urls import include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('playground/', include('playground.urls')),
-    # anything containing playground should include the urls in playground,
+    # anything containing playground should include the urls in playground
+    # urls storefrount -> urls playground
+    path("__debug__/", include("debug_toolbar.urls")),
+    # path for the django debug tool
 ]

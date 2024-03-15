@@ -44,9 +44,12 @@ INSTALLED_APPS = [
     # for displaying things like images, css an so on
     "playground", 
     # from the playground application
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # Middleware for debug toolbar, should be close to the top
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -54,6 +57,13 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+# added according to debug toolbar instructions
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
 ]
 
 ROOT_URLCONF = "storefront.urls"

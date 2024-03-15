@@ -1,7 +1,11 @@
 <!-- added template folder and this html file -->
-<!-- <h1>Hello World </h1> -->
-{% if name %}
-<h1>Hello {{name}}</h1>
-{% else %}
-<h1>Hello World</h1>
-{% endif %}
+<html>
+    <body>
+    {% if name %}
+    <h1>Hello {{name}}</h1>
+    {% else %}
+    <h1>Hello World</h1>
+    {% endif %} 
+    </body>
+</html>
+{% comment %} html and body needed for toolbar to work {% endcomment %}
