@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     # for dusplaying one time notifcations to the user
     "django.contrib.staticfiles",
-    # for displaying things like images
+    # for displaying things like images, css an so on
+    "playground", 
+    # from the playground application
 ]
 
 MIDDLEWARE = [
