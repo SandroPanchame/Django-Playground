@@ -17,6 +17,7 @@ class Product(models.Model):
     # A collection has many products
     promotions = models.ManyToManyField('Promotion', related_name='products')
     # M2M relation between promotions and products
+    # A product can have many promotions applied to it and a promotion can apply to many products at once
     # defualt name would be product_set in promotion class. 
     # related_name = 'products' ->  would set the  attribute to 'products' in the Promotion class
 
@@ -70,6 +71,15 @@ class Address(models.Model):
     
 class Collection(models.Model):
     title = models.CharField(max_length=255)
+    featured_product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True,
+        related_name='+')
+    # a product can be featured multiple times? Can belong to multiple collections?
+    # "fetured product of the collecton"
+    # many products to a collection, they may or may not be featured
+    # 0..1 featured product
+    # '+' tells dango to not create reveresed relationship, we need this because the collection name is being overloaded
+    # we run into an error because django is trying to create 2 reverse relationships of the same name.
+    # an issue arises in a circular relationship (circular dependency)
     
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
@@ -80,7 +90,7 @@ class OrderItem(models.Model):
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
     
 class Cart(models.Model):
-    created_at = models.DateTimeField(auto__now_add = True)
+    created_at = models.DateTimeField(auto_now_add = True)
     # item =models.ForeignKey(Product, on_delete=models.SET_NULL)
     
 class CartItem(models.Model):
