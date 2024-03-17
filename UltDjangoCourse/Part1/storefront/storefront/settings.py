@@ -45,6 +45,10 @@ INSTALLED_APPS = [
     "playground", 
     # from the playground application
     "debug_toolbar",
+    # from the debug toolbar package
+    "store",
+    "tags",
+    # from the data model portion of the course
 ]
 
 MIDDLEWARE = [
