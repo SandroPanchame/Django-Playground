@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "store",
     "tags",
     # from the data model portion of the course
+    "likes",
 ]
 
 MIDDLEWARE = [

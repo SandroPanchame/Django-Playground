@@ -6,8 +6,10 @@ class Product(models.Model):
     # sku = models.CharField(max_length=10, primary_key=True)
     # sku would be the primary key if we dont want an ID assigned by Django
     title = models.CharField(max_length=255)
+    slug = models.SlugField(default='-')
+    # slugs are meant to make it easier for search engines to find things (our product)
     description = models.TextField()
-    price = models.DecimalField(max_digits = 6, decimal_places=2)
+    unit_price = models.DecimalField(max_digits = 6, decimal_places=2)
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
     # look into: auto_now vs auto_now_add
@@ -40,6 +42,15 @@ class Customer(models.Model):
     # Date Field -> date ; DateTimeField -> Date & Time
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
     # Choice Fields introduced here
+    # # Defining Meta Data here 
+    # # |
+    # # V
+    # class Meta:
+    #     db_table='store_customers'
+    #     indexes = [
+    #         models.Index(fields=['first_name','last_name'])
+    #     ]
+    #     # indexes used speed up queries
 
 class Order(models.Model):
     PAYMENT_PENDING = 'P'
