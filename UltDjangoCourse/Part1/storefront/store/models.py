@@ -51,6 +51,7 @@ class Customer(models.Model):
     #         models.Index(fields=['first_name','last_name'])
     #     ]
     #     # indexes used speed up queries
+    # Use version control when wanting to get rid of migrations
 
 class Order(models.Model):
     PAYMENT_PENDING = 'P'
