@@ -6,6 +6,13 @@
     {% else %}
     <h1>Hello World</h1>
     {% endif %} 
+    <ul>
+        {% for product in products %}
+        <li>{{ product.title }}</li>
+        {% empty %}
+        <li>No products found.</li>
+        {% endfor %}
+    </ul>
     </body>
 </html>
 {% comment %} html and body needed for toolbar to work {% endcomment %}
