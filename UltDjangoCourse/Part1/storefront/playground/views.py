@@ -44,7 +44,7 @@ def say_hello(request):
     # queryset=Product.objects.order_by('unit_price','-title')
     TaggedItem.objects.get_tags_for(Product,1)
    
-    return render(request, 'hello.html', {'name' : 'Mosh', 'products': list(queryset)})
+    return render(request, 'hello.html', {'name' : 'Mosh'})
 
 # def calculate():
 #     x = 1
