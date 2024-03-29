@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     # for authenticating users
     "django.contrib.contenttypes",
     # can create generic relationships in models 
-    # "django.contrib.sessions", 
+    "django.contrib.sessions", 
     # (legacy) temporary memory on server for managing users data
     "django.contrib.messages",
     # for dusplaying one time notifcations to the user
