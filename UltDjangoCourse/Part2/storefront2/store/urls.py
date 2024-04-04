@@ -1,15 +1,21 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
-from rest_framework.routers import SimpleRouter
-from pprint import pprint
+# with defualt router, you get two additional features. 
+# they give you a root and the ability to see the data in json format
+# so: <endpoint>.json
+from rest_framework.routers import SimpleRouter, DefaultRouter
+# from pprint import pprint
 
-router = SimpleRouter()
+
+router = DefaultRouter()
 router.register('products', views.ProductViewset)
 router.register('collections', views.CollectionViewSet)
-pprint(router.urls)
+# pprint(router.urls)
 
 # URLConf
+# urlpatterns = router.urls
 urlpatterns = [
+    path('', include(router.urls))
     # path('products/', views.ProductList.as_view()),
     # path('products/<int:id>/',views.ProductDetail.as_view()),
     # path('collections/', views.CollectionList.as_view()),
