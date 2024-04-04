@@ -14,7 +14,7 @@ class ProductSerializer(serializers.ModelSerializer):
     # 12 - Model Serializer
     class Meta:
         model = Product
-        fields = ['id', 'title', 'unit_price', 'price_with_tax', 'collection']
+        fields = ['id', 'title', 'description', 'slug', 'inventory', 'unit_price', 'price_with_tax', 'collection']
         # '__all__' can be used to initialize the fields variable. 
         # Bad practice, there may be things you want to keep hidden 
         # you can replace unit_price with price, just keep the line that initializes the price variable
@@ -38,6 +38,19 @@ class ProductSerializer(serializers.ModelSerializer):
     
     def calculate_tax(self,product: Product):
         return product.unit_price * Decimal(1.1)
+    
+    # save method will call one of the two methods here  depedning on the state of the serializer
+    # def create(self, validated_data):
+    #     product = Product(**validated_data)
+    #     product.other=1
+    #     product.save()
+    #     return product()
+    #     # return super.create(validated_data)
+
+    # def update(self,instance, validated_data):
+    #     instance.unit_price = validated_data.get('unit_price')
+    #     instance.save()
+    #     return instance        
     
     # Don't need this,  you would overide the validate method if you needed to do something extra
     # def validate(self, data):

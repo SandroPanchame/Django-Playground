@@ -21,15 +21,16 @@ def product_list(request):
     elif request.method == 'POST':
         serializer = ProductSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        serializer.save()
         print(serializer.validated_data)
-        return Response('ok')
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
         # if serializer.is_valid():
         #     serializer.validated_data
         #     return Response('ok')
         # else:
         #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view()
+@api_view(['GET','PUT'])
 def product_detail(request, id):
     # try:
     #     product = Product.objects.get(pk=id)
@@ -38,9 +39,20 @@ def product_detail(request, id):
     # except Product.DoesNotExist:
     #     # statu=404 could work too
     #     return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    # prior to the if/elif, the code would have displayed a list of products
     product = get_object_or_404(Product, pk=id)
-    serializer=ProductSerializer(product)
-    return Response(serializer.data)
+    
+    if request.method=='GET':
+        
+        serializer=ProductSerializer(product)
+        return Response(serializer.data)
+    elif request.method=='PUT':
+        # passing the product object will make the serializer try and update the object with the data
+        serializer = ProductSerializer(product, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 @api_view()
 def collection_detail(request, pk):
