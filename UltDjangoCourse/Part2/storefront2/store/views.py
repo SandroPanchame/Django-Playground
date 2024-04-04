@@ -46,6 +46,7 @@ class CollectionViewSet(ModelViewSet):
     
     def destroy(self, request, *args, **kwargs):
         if Product.objects.filter(collection_id=kwargs['pk']).count() > 0:
+            # print(Product.objects.filter(collection_id=kwargs['pk']).count()) [252, id = 3]
         # collection.products.count() > 0:
             return Response({'error':'Collection cannot be deleted because it includes one or more products'}, 
                             status=status.HTTP_405_METHOD_NOT_ALLOWED)
