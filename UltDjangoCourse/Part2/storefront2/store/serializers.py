@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from store.models import Product, Collection
+from store.models import Product, Collection, Review
 from decimal import Decimal
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -58,3 +58,8 @@ class ProductSerializer(serializers.ModelSerializer):
     #     if data['password'] != data['confirm_password']:
     #         return serializers.ValidationError('Passwords do not match')
     #     return data
+    
+    class ReviewSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Review
+            fields = ['id','product','name','description','date']
