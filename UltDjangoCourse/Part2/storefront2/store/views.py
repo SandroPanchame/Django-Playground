@@ -1,15 +1,16 @@
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
+# from django.http import HttpResponse
 
 from django_filters.rest_framework import DjangoFilterBackend
 
 #the rest framework has its own http REQs and RESPs. simpler and more powerful
 from rest_framework.decorators import api_view
-from rest_framework.views import APIView
-from rest_framework.mixins import ListModelMixin, CreateModelMixin
+# from rest_framework.views import APIView
+# from rest_framework.mixins import ListModelMixin, CreateModelMixin
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.filters import SearchFilter
 from rest_framework import status
 
 # Import Serializer and model for product
@@ -23,9 +24,9 @@ from django.db.models import Count
 class ProductViewset(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = ProductFilter
-    # filterset_fields = ['collection_id', 'unit_price']
+    search_fields = ['title', 'description']    # filterset_fields = ['collection_id', 'unit_price']
     # the following line is why we cant use pk. product_id, product_pk
     lookup_field='id' 
     # if the filtering backend was unavailable, use the code below
