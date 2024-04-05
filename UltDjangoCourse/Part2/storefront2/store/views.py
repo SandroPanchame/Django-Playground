@@ -11,7 +11,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 
 # Import Serializer and model for product
-from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer
+from .serializers import *
 from .models import Product, Collection, OrderItem, Review
 
 from django.db.models import Count
@@ -60,8 +60,16 @@ class CollectionViewSet(ModelViewSet):
     #     collection.delete()
     #     return Response(status=status.HTTP_204_NO_CONTENT)
 class ReviewViewSet(ModelViewSet):
-    queryset = Review.objects.all()
+    # queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    
+    def get_queryset(self):
+        return Review.objects.filter(product_id = self.kwargs['product_id'])
+    
+    def get_serializer_context(self):
+        return {'product_id': self.kwargs['product_id']}
+        # used the product_pk keyword, didn't work.
+        # probably due to a change i made
     
      
 
