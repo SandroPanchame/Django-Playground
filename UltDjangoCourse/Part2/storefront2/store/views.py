@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 
+from django_filters.rest_framework import DjangoFilterBackend
+
 #the rest framework has its own http REQs and RESPs. simpler and more powerful
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -14,19 +16,25 @@ from rest_framework import status
 from .serializers import *
 from .models import Product, Collection, OrderItem, Review
 
+from .filters import ProductFilter
+
 from django.db.models import Count
 
 class ProductViewset(ModelViewSet):
     queryset = Product.objects.all()
-    serializer_class=ProductSerializer
+    serializer_class = ProductSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProductFilter
+    # filterset_fields = ['collection_id', 'unit_price']
     # the following line is why we cant use pk. product_id, product_pk
     lookup_field='id' 
-    def get_queryset(self):
-        queryset = Product.objects.all()
-        collection_id = self.request.query_params.get('collection_id')
-        if collection_id is not None:
-            queryset = queryset.filter(collection_id=collection_id)
-        return queryset
+    # if the filtering backend was unavailable, use the code below
+    # def get_queryset(self):
+    #     queryset = Product.objects.all()
+    #     collection_id = self.request.query_params.get('collection_id')
+    #     if collection_id is not None:
+    #         queryset = queryset.filter(collection_id=collection_id)
+    #     return queryset
     
     def get_serializer_context(self):
         return {'request': self.request}
