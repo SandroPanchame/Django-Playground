@@ -9,9 +9,10 @@ from rest_framework.decorators import api_view
 # from rest_framework.mixins import ListModelMixin, CreateModelMixin
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.mixins import CreateModelMixin
 from rest_framework import status
 
 # Import Serializer and model for product
@@ -92,8 +93,19 @@ class ReviewViewSet(ModelViewSet):
         # used the product_pk keyword, didn't work.
         # probably due to a change i made
 
-class CartViewSet(ModelViewSet):
+class CartViewSet(CreateModelMixin,GenericViewSet):
+    queryset = Cart.objects.all()
     serializer_class = CartSerializer
+    
+    def get_queryset(self):
+        return super().get_queryset()
+    
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
+    
+    
+class CartItemViewSet(ModelViewSet):
+    serializer_class = CartItemSerializer
      
 
 # # class based view, cleaner code

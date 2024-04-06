@@ -101,9 +101,13 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name = 'items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField()
+    
+    class Meta:
+        # you can have a list of lists
+        unique_together = [['cart','product']]
 
 class Review(models.Model):
     product=models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
