@@ -11,12 +11,13 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 
 # Import Serializer and model for product
 from .serializers import *
 from .models import Product, Collection, OrderItem, Review
-
+from .pagination import DefaultPagination
 from .filters import ProductFilter
 
 from django.db.models import Count
@@ -26,6 +27,7 @@ class ProductViewset(ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ProductFilter
+    pagination_class = DefaultPagination
     search_fields = ['title', 'description']    
     ordering_fields = ['unit_price', 'last_update']
     # filterset_fields = ['collection_id', 'unit_price']
@@ -89,7 +91,9 @@ class ReviewViewSet(ModelViewSet):
         return {'product_id': self.kwargs['product_id']}
         # used the product_pk keyword, didn't work.
         # probably due to a change i made
-    
+
+class CartViewSet(ModelViewSet):
+    serializer_class = CartSerializer
      
 
 # # class based view, cleaner code
