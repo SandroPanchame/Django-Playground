@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from rest_framework import status
 
 # Import Serializer and model for product
@@ -92,21 +92,32 @@ class ReviewViewSet(ModelViewSet):
         return {'product_id': self.kwargs['product_id']}
         # used the product_pk keyword, didn't work.
         # probably due to a change i made
-
-class CartViewSet(CreateModelMixin,GenericViewSet):
-    queryset = Cart.objects.all()
+# the inheritance here prevents GET  of all carts
+# List Model Mixin is responsible for it
+class CartViewSet(CreateModelMixin,
+                  RetrieveModelMixin,
+                  DestroyModelMixin,
+                  GenericViewSet):
+    # Use prefetch for many items, use select_related for singular
+    queryset = Cart.objects.prefetch_related('items__product').all()
     serializer_class = CartSerializer
     
-    def get_queryset(self):
-        return super().get_queryset()
+    # def get_queryset(self):
+    #     return Cart.objects.filter(cart_id = self.kwargs['cart_id'])
     
-    def destroy(self, request, *args, **kwargs):
-        return super().destroy(request, *args, **kwargs)
+    # def get_serializer_context(self):
+    #     return {'request': self.request}
+    
     
     
 class CartItemViewSet(ModelViewSet):
+
     serializer_class = CartItemSerializer
-     
+    
+    def get_queryset(self):
+        return CartItem.objects\
+            .filter(cart_id = self.kwargs['cart_pk'])\
+            .select_related('product')
 
 # # class based view, cleaner code
 # class ProductList(ListCreateAPIView):
