@@ -113,6 +113,7 @@ class CartViewSet(CreateModelMixin,
 class CartItemViewSet(ModelViewSet):
 
     # serializer_class = CartItemSerializer
+    # Method names in the array must be lower case
     http_method_names = ['get','post','patch','delete']
     def get_serializer_class(self):
         
