@@ -170,7 +170,25 @@ class CustomerViewSet(ModelViewSet):
     def history(self, request, pk):
         return Response('ok')
             
-        
+class OrderViewSet(ModelViewSet):
+    #  queryset = Order.objects.all()
+    # serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreateOrderSerializer
+        return OrderSerializer
+    
+    def get_serializer_context(self):
+        return {'user_id':self.request.user.id}
+     
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Order.objects.all()
+        customer_id, created = Customer.objects.get_or_create(user_id = user.id)
+        return Order.objects.filter(customer_id=customer_id)  
     
     
 # # class based view, cleaner code
