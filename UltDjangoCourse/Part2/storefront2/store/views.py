@@ -22,7 +22,7 @@ from .serializers import *
 from .models import Product, Collection, OrderItem, Review
 from .pagination import DefaultPagination
 from .filters import ProductFilter
-from .permissions import IsAdminOrReadOnly, FullDjangoModelPermissions
+from .permissions import IsAdminOrReadOnly, FullDjangoModelPermissions, ViewCustomerHistoryPermission
 
 from django.db.models import Count
 
@@ -148,7 +148,7 @@ class CustomerViewSet(ModelViewSet):
     def  get_permissions(self):
         if self.request.method =='GET':
             return [AllowAny()]
-        return[IsAuthenticated]
+        return[IsAuthenticated()]
     
     # methods referred to as actions
     # detail = False : available on list view
@@ -165,8 +165,11 @@ class CustomerViewSet(ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data)
+    
+    @action(detail=True, permission_classes=[ViewCustomerHistoryPermission])        
+    def history(self, request, pk):
+        return Response('ok')
             
-        
         
     
     
