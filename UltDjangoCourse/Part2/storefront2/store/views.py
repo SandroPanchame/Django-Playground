@@ -15,14 +15,14 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, DjangoModelPermissions,DjangoModelPermissionsOrAnonReadOnly
 
 # Import Serializer and model for product
 from .serializers import *
 from .models import Product, Collection, OrderItem, Review
 from .pagination import DefaultPagination
 from .filters import ProductFilter
-from .permissions import IsAdminOrReadOnly
+from .permissions import IsAdminOrReadOnly, FullDjangoModelPermissions
 
 from django.db.models import Count
 
@@ -139,6 +139,9 @@ class CartItemViewSet(ModelViewSet):
 class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    # With Django Model Permissions, user has to be authenticated and 
+    # have the relevant model permissions
+    # sometime IsAdminUser is good enough
     permission_classes = [IsAdminUser]
     
     # for permissions, allowed to recieve, but not update
