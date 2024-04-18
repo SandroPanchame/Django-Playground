@@ -155,7 +155,7 @@ class CustomerViewSet(ModelViewSet):
     # if True, available on the detail view
     @action(detail=False, methods=['GET','PUT'], permission_classes=[IsAuthenticated])
     def me(self, request):
-        customer, created = Customer.objects.get_or_create(user_id=request.user.id)
+        customer, created = Customer.objects.get(user_id=request.user.id)
         if request.method == 'GET':
             customer = Customer.objects.get(user_id=request.user.id)
             serializer = CustomerSerializer(customer)
@@ -175,7 +175,7 @@ class OrderViewSet(ModelViewSet):
     # serializer_class = OrderSerializer
     # permission_classes = [IsAuthenticated]
     # you can use get_permissions instead of setting up the classes
-    http_method_names = ['get','patch','delete','head', 'options']
+    http_method_names = ['get','post', 'patch','delete','head', 'options']
     
     def get_permissions(self):
         if self.request.method in ['PATCH','DELETE']:
@@ -185,17 +185,22 @@ class OrderViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return CreateOrderSerializer
+        elif self.request.method == 'PATCH':
+            return UpdateOrderSerializer
         return OrderSerializer
     
     # method commented out, no longer need to rely on a mixin
     # def get_serializer_context(self):
     #     return {'user_id':self.request.user.id}
-     
+    #  Command uery seperation principle: methods should either change the state 
+    #   of the system or handle queries. Shoudln't do both
+    # signals solved the issue, geto or create replaced with only.get
+    
     def get_queryset(self):
         user = self.request.user
         if user.is_staff:
             return Order.objects.all()
-        customer_id, created = Customer.objects.get_or_create(user_id = user.id)
+        customer_id, created = Customer.objects.only('id').get(user_id = user.id)
         return Order.objects.filter(customer_id=customer_id)  
     
     def create(self, request, *args, **kwargs):
