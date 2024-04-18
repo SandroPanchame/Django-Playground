@@ -41,6 +41,12 @@ class Product(models.Model):
 
     class Meta:
         ordering = ['title']
+        
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    # for any other types of files use FileField()
+    # would be put into the media/store/images
+    image = models.ImageField(upload_to='store/images')
 
 
 class Customer(models.Model):
