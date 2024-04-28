@@ -2,6 +2,8 @@ from rest_framework.test import APIClient
 from rest_framework import status
 import pytest
 
+# pytest-watch is for continous testing
+
 # Ran into an issue involving pytest, installed pytest-django.(fixed)
 # pytest-django introduces additional decorators.
  
