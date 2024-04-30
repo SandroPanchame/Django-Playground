@@ -1,6 +1,6 @@
 {
     "python.testing.pytestArgs": [
-        "."
+        "./UltDjangoCourse/Part3/storefront3"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true

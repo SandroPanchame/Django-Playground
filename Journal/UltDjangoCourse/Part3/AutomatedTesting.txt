@@ -1,0 +1,10 @@
+9- Running and Debugging Tests in VSCode
+    - ran into an issue where the testing window could not find the collections test
+    - the course had the storefront directory as root, needed to make changes to settings.json
+    - location: ./.vscode/settings.json
+    - The setting was changed to:
+
+        "python.testing.pytestArgs": [
+        "./UltDjangoCourse/Part3/storefront3"
+        ],
+    
