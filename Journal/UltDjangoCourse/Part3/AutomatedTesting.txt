@@ -10,4 +10,10 @@
 
 11- Single or Multiple assertions
     - Remember to save before testing!
+
+12- Fixtures
+    - ran into an isue with the fixture, had an unused variable 'collection'
+    - don't really remember why I put it there
+    - most likely: listening, but not looking at implementation/video
+    - pytest worked
     
